@@ -3,6 +3,8 @@ DROP PROCEDURE IF EXISTS my_sales_employee_transaction $$
 CREATE PROCEDURE my_sales_employee_transaction()
 BEGIN
 
+	START TRANSACTION;
+    
 	CREATE TABLE Employee
 	(	
 		EmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT, 
@@ -23,8 +25,8 @@ BEGIN
 	CREATE TABLE SalesEmployee
 	(
 		SalesEmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-		JobTitleName VARCHAR (20),
-		EmployeeEmployeeID SMALLINT UNSIGNED
+		CommissionRate DECIMAL (4, 4),
+		EmployeeID SMALLINT UNSIGNED
 	);
 
     ALTER TABLE Employee
@@ -40,9 +42,29 @@ BEGIN
 	-- As a member of the HR team I want to be able to create a new sales employee. 
     -- I should be able to store a name, salary, bank account number, national insurance number and commission rate
     
+    -- Populate JobTitleTable
+    
+    INSERT INTO JobTitle(JobTitleName)
+    VALUES ("Sales");
+    
+    INSERT INTO JobTitle(JobTitleName)
+    VALUES ("Delivery");
+    
+    -- check the number of affected rows
+	GET DIAGNOSTICS @rows = ROW_COUNT;
+	IF @rows = 0 THEN
+		-- if an error occurred rollback the transaction
+		ROLLBACK;
+		SELECT 'Transaction rolled back due to error.';
+	ELSE
+		--  If no error occurred, commit transaction
+		COMMIT;
+		SELECT 'Transaction committed successfully';
+	 END IF;  
+    
     -- 1. Populate the Employee table using an insert
-     INSERT INTO Employee (EmployeeFistName, EmployeeSurname, Salary, BankAccountNumber, NationalInsuranceNumber, JobTitleID) 
-     VALUES ('', '', , , , 1);
+     INSERT INTO Employee (EmployeeFirstName, EmployeeSurname, Salary, BankAccountNo, NationalInsuranceNo, JobTitleID) 
+     VALUES ('Darragh', 'Haughey', 300000.00, "12345678-01-02-03", "AB123456C", 1);
     
     -- check the number of affected rows
 	GET DIAGNOSTICS @rows = ROW_COUNT;
@@ -58,7 +80,7 @@ BEGIN
      
     -- 2. The employee exists and their comission can be exclusively applied to them in the SalesEmployee table
     INSERT INTO SalesEmployee (CommissionRate) 
-	VALUES ( );
+	VALUES (0.2);
     
     -- check the number of affected rows
 	GET DIAGNOSTICS @rows = ROW_COUNT;
