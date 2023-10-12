@@ -1,0 +1,71 @@
+DELIMITER $$
+DROP PROCEDURE IF EXISTS my_transaction $$
+CREATE PROCEDURE my_transaction()
+BEGIN
+
+	CREATE TABLE Employee
+	(	
+		EmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT, 
+		EmployeeFirstName VARCHAR(20),
+		EmployeeSurname VARCHAR(20),
+		Salary DECIMAL(10,2),
+		BankAccountNo VARCHAR(64),
+		NationalInsuranceNo VARCHAR(64),
+		JobTitleID TINYINT
+	);
+
+	CREATE TABLE JobTitle
+	(
+		JobTitleID TINYINT PRIMARY KEY AUTO_INCREMENT,
+		JobTitleName VARCHAR (20)
+	);
+
+	CREATE TABLE SalesEmployee
+	(
+		SalesEmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		JobTitleName VARCHAR (20),
+		EmployeeEmployeeID SMALLINT UNSIGNED
+	);
+
+	CREATE TABLE DeliveryProject
+	(
+		DeliveryProjectID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		TechLead BOOLEAN,
+		ActiveOnProject BOOLEAN,
+		EmployeeID SMALLINT UNSIGNED,
+		ProjectID SMALLINT UNSIGNED
+	);
+
+	CREATE TABLE Project
+	(
+		ProjectID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		ProjectName VARCHAR(50),
+		ProjectValue DECIMAL(10,2),
+		IsCompleted BOOLEAN,
+		ClientID SMALLINT UNSIGNED
+	);
+
+	CREATE TABLE `Client`
+	(
+		ClientID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		ClientFirstName VARCHAR(20),
+		ClientSurname VARCHAR(20),
+		ClientAddress TEXT,
+		EmployeeID SMALLINT UNSIGNED
+	);
+
+	CREATE TABLE ProjectTechnology
+	(
+		ProjectTechnology SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		ProjectID SMALLINT UNSIGNED,
+		TechnologyID SMALLINT UNSIGNED
+	);
+
+	CREATE TABLE Technology
+	(
+		TechnologyID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		TechnologyName VARCHAR(20)
+	);
+END $$
+DELIMITER ;
+CALL my_transaction();
