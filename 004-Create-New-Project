@@ -1,0 +1,46 @@
+DELIMITER $$
+DROP PROCEDURE IF EXISTS my_transaction $$
+CREATE PROCEDURE my_transaction ()
+BEGIN
+	START TRANSACTION;
+    
+  -- As a member of the Sales team I want to be able to create a new project. 
+  -- I should be able to store a project name, value and a list of technologies that the project will use
+    
+    
+    -- 1. Populate the project table 
+     INSERT INTO Project (ProjectID, ProjectName, ProjectValue, ClientID,IsCompleted) 
+     VALUES ( , );
+    
+    -- check the number of affected rows
+	GET DIAGNOSTICS @rows = ROW_COUNT;
+	IF @rows = 0 THEN
+		-- if an error occurred rollback the transaction
+		ROLLBACK;
+		SELECT 'Transaction rolled back due to error.';
+	ELSE
+		--  If no error occurred, commit transaction
+		COMMIT;
+		SELECT 'Transaction committed successfully';
+	 END IF;
+    
+
+    -- 2. Populate the ProjectTechnoloies with the ProjectID
+    INSERT INTO ProjectTechnologies (ProjectID, TechnologyID) 
+     VALUES ( , );
+
+     -- check the number of affected rows
+	GET DIAGNOSTICS @rows = ROW_COUNT;
+	IF @rows = 0 THEN
+		-- if an error occurred rollback the transaction
+		ROLLBACK;
+		SELECT 'Transaction rolled back due to error.';
+	ELSE
+		--  If no error occurred, commit transaction
+		COMMIT;
+		SELECT 'Transaction committed successfully';
+	 END IF;
+     
+    END $$
+DELIMITER ;
+CALL my_transaction();
