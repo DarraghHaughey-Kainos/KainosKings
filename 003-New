@@ -15,6 +15,7 @@ BEGIN
 		FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
 	);
 
+
     
 	INSERT INTO `Client`(ClientFirstName, ClientSurname, ClientAddress, ClientPhoneNumber, EmployeeID)
 	VALUES ('Giuseppe', 'Lupari', '4-6 Upper Crescent', '01234', 1);
