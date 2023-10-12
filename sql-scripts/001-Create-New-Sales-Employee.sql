@@ -5,6 +5,12 @@ BEGIN
 
 	START TRANSACTION;
     
+    CREATE TABLE JobTitle
+	(
+		JobTitleID TINYINT PRIMARY KEY AUTO_INCREMENT,
+		JobTitleName VARCHAR (20)
+	);
+    
 	CREATE TABLE Employee
 	(	
 		EmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT, 
@@ -13,31 +19,23 @@ BEGIN
 		Salary DECIMAL(10,2),
 		BankAccountNo VARCHAR(64),
 		NationalInsuranceNo VARCHAR(64),
-		JobTitleID TINYINT
-	);
-
-	CREATE TABLE JobTitle
-	(
-		JobTitleID TINYINT PRIMARY KEY AUTO_INCREMENT,
-		JobTitleName VARCHAR (20)
+		JobTitleID TINYINT,
+        
+        CONSTRAINT fk_Employee_JobTitleID
+		FOREIGN KEY(JobTitleID)
+		REFERENCES JobTitle(JobTitleID)
+        
 	);
 
 	CREATE TABLE SalesEmployee
 	(
-		SalesEmployeeID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-		CommissionRate DECIMAL (4, 4),
-		EmployeeID SMALLINT UNSIGNED
-	);
-
-    ALTER TABLE Employee
-	ADD CONSTRAINT fk_Employee_JobTitleID
-	FOREIGN KEY(JobTitleID)
-	REFERENCES JobTitle(JobTitleID);
     
-    ALTER TABLE SalesEmployee
-	ADD CONSTRAINT fk_SalesEmployee_EmployeeID
-	FOREIGN KEY(EmployeeID)
-	REFERENCES Employee(EmployeeID);
+		EmployeeID SMALLINT UNSIGNED,
+		CommissionRate DECIMAL (4, 4),
+		
+        PRIMARY KEY(EmployeeID, CommissionRate)
+		
+	);
     
 	-- As a member of the HR team I want to be able to create a new sales employee. 
     -- I should be able to store a name, salary, bank account number, national insurance number and commission rate
