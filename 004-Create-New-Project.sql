@@ -10,14 +10,13 @@ BEGIN
 		ProjectName VARCHAR(50),
 		ProjectValue DECIMAL(10,2),
 		IsCompleted BOOLEAN,
-		ClientID SMALLINT UNSIGNED
+		ClientID SMALLINT UNSIGNED,
+        
 		CONSTRAINT fk_Project_ClientID
 	    FOREIGN KEY(ClientID)
-	    REFERENCES `Client`(ClientID);
+	    REFERENCES `Client`(ClientID)
 	);
     
-    
-	
     
   -- As a member of the Sales team I want to be able to create a new project. 
   -- I should be able to store a project name, value and a list of technologies that the project will use
@@ -71,13 +70,15 @@ BEGIN
     CREATE TABLE ProjectTechnology
 	(
 		ProjectID SMALLINT UNSIGNED,
-		TechnologyID SMALLINT UNSIGNED
+		TechnologyID SMALLINT UNSIGNED,
+        
 		CONSTRAINT fk_ProjectTechnology_ProjectID
     	FOREIGN KEY(ProjectID)
-	    REFERENCES Project(ProjectID);
+	    REFERENCES Project(ProjectID),
+        
 		CONSTRAINT fk_ProjectTechnology_TechnologyID
 	    FOREIGN KEY(TechnologyID)
-	    REFERENCES Technology(TechnologyID);
+	    REFERENCES Technology(TechnologyID)
 	);
         
     
@@ -93,8 +94,8 @@ BEGIN
 
 	SELECT ProjectName as 'Project', TechnologyName as 'Technology'
 	FROM ProjectTechnology
-	INNER JOIN Project USING ProjectID
-	INNER JOIN Technology USING TechnologyID
+	INNER JOIN Project USING (ProjectID)
+	INNER JOIN Technology USING (TechnologyID)
 	WHERE ProjectID = 1;
 
      -- check the number of affected rows
