@@ -1,14 +1,26 @@
 DELIMITER $$
-DROP PROCEDURE IF EXISTS my_transaction $$
-CREATE PROCEDURE my_transaction ()
+DROP PROCEDURE IF EXISTS my_client_transaction $$
+CREATE PROCEDURE my_client_transaction()
 BEGIN
 	START TRANSACTION;
 
-
-INSERT INTO Clients (ClientFirstName, ClientSurname, ClientAddress, ClientPhoneNumber, EmployeeID)
-VALUES ('Jonny', 'Evans', '4-6 Upper Crescent', '01234', 1);
-
-
+	CREATE TABLE `Client`
+	(
+		ClientID SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+		ClientFirstName VARCHAR(20),
+		ClientSurname VARCHAR(20),
+		ClientAddress TEXT,
+        ClientPhoneNumber VARCHAR(20),
+		EmployeeID SMALLINT UNSIGNED
+	);
+    
+    ALTER TABLE `Client`
+	ADD CONSTRAINT fk_Client_EmployeeID
+	FOREIGN KEY(EmployeeID)
+	REFERENCES Employee(EmployeeID);
+    
+	INSERT INTO `Client`(ClientFirstName, ClientSurname, ClientAddress, ClientPhoneNumber, EmployeeID)
+	VALUES ('Giuseppe', 'Lupari', '4-6 Upper Crescent', '01234', 1);
 
 	-- check the number of affected rows
 	GET DIAGNOSTICS @rows = ROW_COUNT;
@@ -23,4 +35,4 @@ VALUES ('Jonny', 'Evans', '4-6 Upper Crescent', '01234', 1);
 	 END IF;
 END $$
 DELIMITER ;
-CALL my_transaction();
+CALL my_client_transaction();
