@@ -9,6 +9,11 @@ BEGIN
      INSERT INTO Employee (EmployeeFirstName, EmployeeSurname, Salary, BankAccountNo, NationalInsuranceNo, JobTitleID) 
      VALUES ('Jonathan', 'Evans', 35000.00, "2345678901", "CD123456E", 2);
     
+
+	SELECT * FROM Employee
+	WHERE JobTitleID = 2;
+
+
     -- check the number of affected rows
 	GET DIAGNOSTICS @rows = ROW_COUNT;
 	IF @rows = 0 THEN
